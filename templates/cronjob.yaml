@@ -1,0 +1,39 @@
+{{- range $cronjob := $.Values.cronjobs }}
+
+---
+
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ $cronjob.id }}
+  namespace: cronjob
+spec:
+  schedule: "{{ $cronjob.schedule }}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            persistentVolumeClaim:
+              claimName: schedular
+          - name: while
+            secret:
+              secretName: while
+          containers:
+          - name: mucsv-cron
+            image: ubuntu:20.04
+            command:
+            - /bin/sh
+            - -c
+            - {{ $cronjob.command }}
+            volumeMounts:
+            - name: data
+              mountPath: /schedular
+            - name: while
+              readOnly: false
+              mountPath: /opt
+          restartPolicy: OnFailure
+
+
+{{- end }}          

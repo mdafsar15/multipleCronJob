@@ -1,0 +1,5 @@
+cronjobs:
+  - id: job-1
+    name: job-1
+    command: "date; echo Completed job 3"
+    schedule: "* * * * *"
