@@ -28,7 +28,7 @@ spec:
             - -c
             - {{ $cronjob.command }}
             volumeMounts:
-            - name: data
+            - name: while
               mountPath: /schedular
             - name: while
               readOnly: false
